@@ -6,4 +6,4 @@ so data can be process with Open Source tools.
 
 The positioning of TGAM-LSL Brdige in my toolchain is shown below
 
-![postion of TGAM-LSL Bridge](Intro_TGAM_LSLBridge.png)
+![postion of TGAM-LSL Bridge](TGAM_LSLBridge/Intro_TGAM_LSLBridge.png)
