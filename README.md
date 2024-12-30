@@ -7,8 +7,9 @@ The positioning of TGAM-LSL Brdige in toolchain/topology used by me personally, 
 ![postion of TGAM-LSL Bridge](intro.png)
 
 # How to Run
-* make sure that your TGAM head band is on, and connected to PC
-* run command in TGAM_LSLBridge/src forder:
+* turn on TGAM head band
+* makde sure that your COM port specificied in NeuroSkyTGAM_LSLBridge.py, is identical to the one shown on PC
+* run following command in src forder:
 
 >python ./NeuroSkyTGAM_LSLBridge.py
 
