@@ -20,7 +20,7 @@ Started Stream: < sInfo 'TGAM EEG Stream' >
   | Sampling: 512.0 Hz
   | Number of channels: 1
   | Data type: <class 'numpy.int16'>
-  | Source: TGAM_to_LSL
+  | Source: TGAM-LSL-Bridge
 
 * Established connection with COM5
 * Started Forwarding COM data to Stream...
