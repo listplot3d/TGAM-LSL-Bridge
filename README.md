@@ -1,6 +1,7 @@
 # What is TGAM-LSL-Bridge
 1. In short speaking, this tool transfers TGMA data into LSL Stream, so data can be processed by open source NeurScience tools that supports LSL.
-1.1 In verbose speaking, it is a bridge that sends [LSL](https://labstreaminglayer.org/) Stream data, which is forwarded from BLE-USB adaptor, which forwards EEG data from NeuroSky [TGAM](https://store.neurosky.com/products/eeg-tgam) device.
+
+  1.1 In verbose speaking, it is a bridge that sends [LSL](https://labstreaminglayer.org/) Stream data, which is forwarded from BLE-USB adaptor, which forwards EEG data from NeuroSky [TGAM](https://store.neurosky.com/products/eeg-tgam) device.
 
 
 2. The positioning of TGAM-LSL-Bridge in toolchain/topology used by me personally, is shown below:
