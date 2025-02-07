@@ -29,6 +29,7 @@
 # Version Control:
 # 2024.12.13 pulled from https://github.com/lihas/NeuroPy, by Shawn Li
 # 2024.12.23 modified so be able to run with Win11+Python3.12, by Shawn Li
+# 2025.02.06 modifed little-endian issue for bands according to NeuroSky Doc
 
 import serial
 import time
@@ -116,6 +117,7 @@ class NeuroPy3(object):
         self.__packetsReceived = 0
 
 
+
     def __packetParser(self, srl):
         # "packetParser runs continously in a separate thread to parse packets from mindwave and update the corresponding variables"
         while self.running:
@@ -164,66 +166,21 @@ class NeuroPy3(object):
                             val0 = int(payload[i], 16)
                             i = i + 1
                             self.rawValue = val0 * 256 + int(payload[i], 16)
-                            if self.rawValue > 32768:
+                            if self.rawValue >= 32768:
                                 self.rawValue = self.rawValue - 65536
-                        elif(code == '83'):  # ASIC_EEG_POWER
+                            # print(self.rawValue)
+
+                        elif (code == '83'):  # ASIC_EEG_POWER
                             i = i + 1  # for length/it is not used since length =1 byte long and always=2
-                            # delta:
-                            i = i + 1
-                            val0 = int(payload[i], 16)
-                            i = i + 1
-                            val1 = int(payload[i], 16)
-                            i = i + 1
-                            self.delta = val0 * 65536 + val1 * 256 + int(payload[i], 16)
-                            # theta:
-                            i = i + 1
-                            val0 = int(payload[i], 16)
-                            i = i + 1
-                            val1 = int(payload[i], 16)
-                            i = i + 1
-                            self.theta = val0 * 65536 + val1 * 256 + int(payload[i], 16)
-                            # lowAlpha:
-                            i = i + 1
-                            val0 = int(payload[i], 16)
-                            i = i + 1
-                            val1 = int(payload[i], 16)
-                            i = i + 1
-                            self.lowAlpha = val0 * 65536 + val1 * 256 + int(payload[i], 16)
-                            # highAlpha:
-                            i = i + 1
-                            val0 = int(payload[i], 16)
-                            i = i + 1
-                            val1 = int(payload[i], 16)
-                            i = i + 1
-                            self.highAlpha = val0 * 65536 + val1 * 256 + int(payload[i], 16)
-                            # lowBeta:
-                            i = i + 1
-                            val0 = int(payload[i], 16)
-                            i = i + 1
-                            val1 = int(payload[i], 16)
-                            i = i + 1
-                            self.lowBeta = val0 * 65536 + val1 * 256 + int(payload[i], 16)
-                            # highBeta:
-                            i = i + 1
-                            val0 = int(payload[i], 16)
-                            i = i + 1
-                            val1 = int(payload[i], 16)
-                            i = i + 1
-                            self.highBeta = val0 * 65536 + val1 * 256 + int(payload[i], 16)
-                            # lowGamma:
-                            i = i + 1
-                            val0 = int(payload[i], 16)
-                            i = i + 1
-                            val1 = int(payload[i], 16)
-                            i = i + 1
-                            self.lowGamma = val0 * 65536 + val1 * 256 + int(payload[i], 16)
-                            # midGamma:
-                            i = i + 1
-                            val0 = int(payload[i], 16)
-                            i = i + 1
-                            val1 = int(payload[i], 16)
-                            i = i + 1
-                            self.midGamma = val0 * 65536 + val1 * 256 + int(payload[i], 16)
+                            bands = ['delta', 'theta', 'lowAlpha', 'highAlpha', 'lowBeta', 'highBeta',
+                                     'lowGamma', 'midGamma']
+                            for band in bands:
+                                val0 = int(payload[i], 16)
+                                val1 = int(payload[i + 1], 16)
+                                val2 = int(payload[i + 2], 16)
+                                value = val2 * 65536 + val1 * 256 + val0  # little endian
+                                setattr(self, band, value)
+                                i = i + 3
                         else:
                             pass
                         i = i + 1
@@ -429,7 +386,7 @@ if __name__ == '__main__':
     neuropy = NeuroPy3("COM5")
 
     def rawValue_callback(value):
-        print("rawValue is: ", value)
+        # print("rawValue is: ", value)
         return None
 
     neuropy.setCallBack("rawValue", rawValue_callback)
